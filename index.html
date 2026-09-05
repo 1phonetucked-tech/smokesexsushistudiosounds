@@ -23,14 +23,10 @@
     letter-spacing: .14em; text-transform: lowercase; text-align: center;
     color: #000; opacity: 1;
   }
-  #art {
-    width: min(88vw, 62vh, 620px); display: block;
-    opacity: 1;
-  }
+  #art { width: min(88vw, 62vh, 620px); display: block; opacity: 1; }
   #now { margin: 0; text-align: center; max-width: 40ch; min-height: 3em; }
   #t { display: block; font-size: 15px; line-height: 1.35; color: #000; }
   #a { display: block; font-size: 12px; letter-spacing: .06em; color: #000; opacity: 1; margin-top: 4px; }
-  #sc { position: fixed; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; border: 0; }
 </style>
 </head>
 <body>
@@ -38,15 +34,14 @@
 <h1>smokesexsushistudiosounds soundcloud likes shuffled</h1>
 <img id="art" alt="">
 <p id="now"><span id="t">tap to play</span><span id="a"></span></p>
-<iframe id="sc" allow="autoplay" src="about:blank"></iframe>
+<audio id="au" preload="none"></audio>
 
-<script src="https://w.soundcloud.com/player/api.js"></script>
 <script>
 (() => {
   const art = document.getElementById('art');
   const tEl = document.getElementById('t');
   const aEl = document.getElementById('a');
-  const frame = document.getElementById('sc');
+  const au  = document.getElementById('au');
 
   (function pic(list) {
     if (!list.length) { art.style.display = 'none'; return; }
@@ -54,7 +49,7 @@
     art.src = list[0];
   })(['image.png', 'image.jpg', 'image.jpeg', 'image.gif', 'image.webp']);
 
-  let queue = [], i = -1, widget = null, started = false, playing = false, guard = null;
+  let queue = [], i = -1, started = false, guard = null, misses = 0;
 
   // Fisher-Yates over the entire library, crypto-seeded. One full pass = every
   // like exactly once, then a fresh shuffle. No repeats until everything played.
@@ -66,50 +61,43 @@
     return a;
   };
 
-  const widgetSrc = (url) =>
-    'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url) +
-    '&auto_play=true&show_artwork=false&visual=false&buying=false&sharing=false&liking=false';
-
   function next() {
     clearTimeout(guard);
+    if (misses > 25) { tEl.textContent = 'nothing is loading'; aEl.textContent = ''; return; }
     i++;
     if (i >= queue.length) { shuffle(queue); i = 0; }
     const t = queue[i];
     tEl.textContent = t.title;
     aEl.textContent = t.artist || '';
-    // if a track refuses to load (pulled, geo-blocked, embed-disabled), move on
-    guard = setTimeout(next, 14000);
-    if (widget) widget.load(t.url, { auto_play: true });
-    else frame.src = widgetSrc(t.url);
+    au.src = '/api/stream?id=' + t.id;
+    misses++;
+    guard = setTimeout(next, 20000); // dead or unresolvable track: move on
+    au.play().catch(() => {});
   }
 
-  function bind() {
-    widget = SC.Widget(frame);
-    const E = SC.Widget.Events;
-    widget.bind(E.PLAY,   () => { clearTimeout(guard); playing = true; document.body.classList.add('playing'); });
-    widget.bind(E.PAUSE,  () => { playing = false; document.body.classList.remove('playing'); });
-    widget.bind(E.FINISH, next);
-    widget.bind(E.ERROR,  next);
-  }
+  au.addEventListener('playing', () => { clearTimeout(guard); misses = 0; });
+  au.addEventListener('ended', next);
+  au.addEventListener('error', () => { if (started) next(); });
 
   fetch('likes.json')
     .then(r => r.json())
     .then(list => { queue = shuffle(list.slice()); tEl.textContent = 'tap to play'; })
     .catch(() => { tEl.textContent = 'likes.json missing'; });
 
-  // one tap starts it; after that taps do nothing, so it can't be paused by accident
+  // The first tap sets src and calls play() inside the gesture, which is what
+  // unlocks audio on iOS and Safari. Every later track reuses this same unlocked
+  // element, so it keeps playing on its own. After that, taps do nothing.
   function start() {
     if (started || !queue.length) return;
     started = true;
     document.body.style.cursor = 'default';
     next();
-    frame.addEventListener('load', function once() { frame.removeEventListener('load', once); bind(); });
   }
 
   document.body.addEventListener('click', start);
   addEventListener('keydown', (e) => {
     if (!started) { if (e.code === 'Space') { e.preventDefault(); start(); } return; }
-    if (e.code === 'Space' && widget) { e.preventDefault(); playing ? widget.pause() : widget.play(); }
+    if (e.code === 'Space') { e.preventDefault(); au.paused ? au.play() : au.pause(); }
     if (e.code === 'ArrowRight') next();
   });
 })();
