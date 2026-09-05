@@ -97,22 +97,20 @@
     .then(list => { queue = shuffle(list.slice()); tEl.textContent = 'tap to play'; })
     .catch(() => { tEl.textContent = 'likes.json missing'; });
 
-  function toggle() {
-    if (!queue.length) return;
-    if (!started) {
-      started = true;
-      next();
-      frame.addEventListener('load', function once() { frame.removeEventListener('load', once); bind(); });
-      return;
-    }
-    if (!widget) return;
-    playing ? widget.pause() : widget.play();
+  // one tap starts it; after that taps do nothing, so it can't be paused by accident
+  function start() {
+    if (started || !queue.length) return;
+    started = true;
+    document.body.style.cursor = 'default';
+    next();
+    frame.addEventListener('load', function once() { frame.removeEventListener('load', once); bind(); });
   }
 
-  document.body.addEventListener('click', toggle);
+  document.body.addEventListener('click', start);
   addEventListener('keydown', (e) => {
-    if (e.code === 'Space') { e.preventDefault(); toggle(); }
-    if (e.code === 'ArrowRight' && started) next();
+    if (!started) { if (e.code === 'Space') { e.preventDefault(); start(); } return; }
+    if (e.code === 'Space' && widget) { e.preventDefault(); playing ? widget.pause() : widget.play(); }
+    if (e.code === 'ArrowRight') next();
   });
 })();
 </script>
