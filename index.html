@@ -26,7 +26,8 @@
     letter-spacing: .14em; text-transform: lowercase; text-align: center;
     color: #000; opacity: 1;
   }
-  #mark { display: block; width: 100%; height: clamp(22px, 5vw, 120px); fill: #f0f; }
+  /* overflow visible so the overshoot on s/e/o is not clipped at the baseline */
+  #mark { display: block; width: 100%; height: clamp(22px, 5vw, 120px); fill: #f0f; overflow: visible; }
   #mark text { font-family: Arial, Helvetica, sans-serif; font-weight: 400; }
   #sub { display: block; margin-top: .75em; font-weight: 400; text-align: left; padding-left: 10px; }
   #art {
