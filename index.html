@@ -20,12 +20,13 @@
     touch-action: manipulation;
   }
   h1 {
-    margin: 0; font-size: clamp(13px, 2.6vw, 17px); font-weight: 700;
+    margin: 0; width: 100vw; font-size: clamp(13px, 2.6vw, 17px); font-weight: 700;
     letter-spacing: .14em; text-transform: lowercase; text-align: center;
     color: #000; opacity: 1;
   }
-  #mark { display: block; color: #f0f; font-weight: 400; font-size: clamp(18px, 4.4vw, 28px); }
-  #sub { display: block; margin-top: 6px; }
+  #mark { display: block; width: 100%; height: auto; fill: #f0f; }
+  #mark text { font-family: Arial, Helvetica, sans-serif; font-weight: 400; }
+  #sub { display: block; margin-top: 10px; }
   #art { width: min(88vw, 62vh, 620px); display: block; opacity: 1; }
   #now { margin: 0; text-align: center; max-width: 40ch; min-height: 3em; }
   #t { display: block; font-size: 15px; line-height: 1.35; color: #000; }
@@ -34,7 +35,7 @@
 </head>
 <body>
 
-<h1><span id="mark">smokesexsushistudiosounds</span><span id="sub">soundcloud likes: shuffled</span></h1>
+<h1><svg id="mark" viewBox="0 0 1000 80" role="img" aria-label="smokesexsushistudiosounds"><text x="0" y="76" textLength="1000" lengthAdjust="spacingAndGlyphs" font-size="100">smokesexsushistudiosounds</text></svg><span id="sub">soundcloud likes: shuffled</span></h1>
 <img id="art" alt="">
 <p id="now"><span id="t">tap to play</span><span id="a"></span></p>
 <audio id="au" preload="none"></audio>
