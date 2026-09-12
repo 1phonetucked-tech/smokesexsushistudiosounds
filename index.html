@@ -45,8 +45,12 @@
     #now { margin-left: 3px; }
     /* photo sits bottom center, full bleed */
     #art { width: 100vw; align-self: center; margin: auto -20px -28px; }
-    /* recentre on the artwork itself, not its transparent canvas */
-    #art[src$="image.png"] { transform: translate(1.99%, 7.55%); }
+    /* the opaque artwork is only 1230/1280 of the canvas, so oversize the box
+       by that ratio and pin its left edge at 0 to make the picture span the screen */
+    #art[src$="image.png"] {
+      width: 104.07vw; align-self: flex-start;
+      margin: auto auto -28px -20px; transform: translateY(7.55%);
+    }
   }
   #t {
     display: block; color: #000; font-weight: 400;
