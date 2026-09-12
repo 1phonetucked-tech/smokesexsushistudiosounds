@@ -32,6 +32,7 @@
     width: min(100%, 1180px); height: auto;
     max-height: calc(100vh - 215px - clamp(22px, 5vw, 120px));
     display: block; opacity: 1;
+    align-self: flex-end; margin-top: auto;
   }
   #now { margin: 0 0 0 -10px; align-self: flex-start; text-align: left; max-width: 40ch; min-height: 3em; }
   #t { display: block; font-size: 15px; line-height: 1.35; color: #000; font-weight: 400; }
@@ -41,8 +42,8 @@
 <body>
 
 <h1><svg id="mark" viewBox="0 0 1000 80" preserveAspectRatio="none" role="img" aria-label="smokesexsushistudiosounds"><text x="0" y="76" textLength="1000" lengthAdjust="spacingAndGlyphs" font-size="100">smokesexsushistudiosounds</text></svg><span id="sub">soundcloud likes: shuffled</span></h1>
-<img id="art" alt="">
 <p id="now"><span id="t">tap to play</span><span id="a"></span></p>
+<img id="art" alt="">
 <audio id="au" preload="none"></audio>
 
 <script>
