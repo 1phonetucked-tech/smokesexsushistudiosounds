@@ -15,40 +15,43 @@
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700; font-size: 14px; line-height: 1.5;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 20px; padding: calc(52px + clamp(22px, 5vw, 120px)) 20px 28px; box-sizing: border-box;
+    gap: 20px; padding: 20px 20px 28px; box-sizing: border-box;
     -webkit-user-select: none; user-select: none; cursor: pointer;
     touch-action: manipulation;
   }
+  #top { position: absolute; top: 10px; left: 0; width: 100vw; }
   h1 {
-    position: absolute; top: 10px; left: 0; width: 100vw;
+    width: 100%;
     margin: 0; font-size: clamp(13px, 2.6vw, 17px); font-weight: 700;
     letter-spacing: .14em; text-transform: lowercase; text-align: center;
     color: #000; opacity: 1;
   }
   #mark { display: block; width: 100%; height: clamp(22px, 5vw, 120px); fill: #f0f; }
   #mark text { font-family: Arial, Helvetica, sans-serif; font-weight: 400; }
-  #sub { display: block; margin-top: 8px; font-weight: 400; text-align: left; padding-left: 10px; }
+  #sub { display: block; margin-top: .75em; font-weight: 400; text-align: left; padding-left: 10px; }
   #art {
     width: min(100%, 1340px); height: auto;
-    max-height: calc(100vh - 180px - clamp(22px, 5vw, 120px));
+    max-height: calc(100vh - 53px - clamp(22px, 5vw, 120px) - 6.5 * clamp(13px, 2.6vw, 17px));
     display: block; opacity: 1;
     align-self: flex-end; margin: auto -20px -28px auto;
   }
   /* image.png carries 50px/69px of transparent edge; shift just that one out of frame */
   #art[src$="image.png"] { transform: translate(3.91%, 7.55%); }
-  #now { margin: 0 0 0 -10px; align-self: flex-start; text-align: left; max-width: 40ch; min-height: 3em; }
+  #now { margin: calc(.5 * clamp(13px, 2.6vw, 17px)) 0 0 10px; text-align: left; max-width: 40ch; min-height: 3em; }
   #t {
     display: block; color: #000; font-weight: 400;
     font-size: clamp(13px, 2.6vw, 17px); line-height: 1.5;
     letter-spacing: .14em; text-transform: lowercase;
   }
-  #a { display: block; font-size: 12px; letter-spacing: .06em; color: #000; opacity: 1; margin-top: 4px; }
+  #a { display: block; font-size: 12px; letter-spacing: .06em; color: #000; opacity: 1; margin-top: calc(.75 * clamp(13px, 2.6vw, 17px) - 3px); }
 </style>
 </head>
 <body>
 
-<h1><svg id="mark" viewBox="0 0 1000 80" preserveAspectRatio="none" role="img" aria-label="smokesexsushistudiosounds"><text x="0" y="76" textLength="1000" lengthAdjust="spacingAndGlyphs" font-size="100">smokesexsushistudiosounds</text></svg><span id="sub">soundcloud likes: shuffled</span></h1>
+<header id="top">
+<h1><svg id="mark" viewBox="0 0 1000 76" preserveAspectRatio="none" role="img" aria-label="smokesexsushistudiosounds"><text x="0" y="76" textLength="1000" lengthAdjust="spacingAndGlyphs" font-size="100">smokesexsushistudiosounds</text></svg><span id="sub">soundcloud likes: shuffled</span></h1>
 <p id="now"><span id="t">tap to play</span><span id="a"></span></p>
+</header>
 <img id="art" alt="">
 <audio id="au" preload="none"></audio>
 
