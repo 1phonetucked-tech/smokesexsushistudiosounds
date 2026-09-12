@@ -37,7 +37,11 @@
   /* image.png carries 50px/69px of transparent edge; shift just that one out of frame */
   #art[src$="image.png"] { transform: translate(3.91%, 7.55%); }
   #now { margin: 0 0 0 -10px; align-self: flex-start; text-align: left; max-width: 40ch; min-height: 3em; }
-  #t { display: block; font-size: 15px; line-height: 1.35; color: #000; font-weight: 400; }
+  #t {
+    display: block; color: #000; font-weight: 400;
+    font-size: clamp(13px, 2.6vw, 17px); line-height: 1.5;
+    letter-spacing: .14em; text-transform: lowercase;
+  }
   #a { display: block; font-size: 12px; letter-spacing: .06em; color: #000; opacity: 1; margin-top: 4px; }
 </style>
 </head>
